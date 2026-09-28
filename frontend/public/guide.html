@@ -47,6 +47,14 @@
     .step b { color: var(--manila); }
     code { background: var(--chip); padding: 0 4px; font-family: Consolas, "SFMono-Regular", monospace; font-size: 0.92em; }
     .small { color: var(--muted); font-size: 15px; }
+    figure.diagram {
+      margin: 16px 0 28px;
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 16px 12px 4px;
+    }
+    figure.diagram svg { width: 100%; height: auto; display: block; }
+    figcaption { text-align: center; margin: 10px 0 12px; font-size: 15px; }
     @media (max-width: 860px) {
       .layout { grid-template-columns: 1fr; }
       nav { position: relative; height: auto; }
@@ -73,6 +81,15 @@
       <a href="#GoodsController">商品入口</a>
       <a href="#PurchaseApplyServiceImpl">申请怎么保存</a>
       <a href="#PurchaseOrderServiceImpl">订单怎么来的</a>
+      <div class="group">论文用图</div>
+      <a href="#figures">这些图怎么放进论文</a>
+      <a href="#fig-usecase">用例图</a>
+      <a href="#fig-arch">架构图</a>
+      <a href="#fig-er">E-R 图</a>
+      <a href="#fig-module">功能模块图</a>
+      <a href="#fig-flow">业务流程图</a>
+      <a href="#fig-class">类图</a>
+      <a href="#fig-seq">时序图</a>
       <div class="group">词典</div>
       <a href="#dict-common">公共小工具</a>
       <a href="#dict-config">启动时的配置</a>
@@ -149,6 +166,348 @@
         <h3>页面上的字是怎么拼出来的</h3>
         <p>数据库里的申请只记了“用户编号 3、商品编号 1、数量 2”。页面却要显示“普通员工买了 A4 打印纸 2 包，一共多少钱”。<span class="en">ApplyViewAssembler</span> 就是做这件事的人：按编号把姓名、商品名和金额补上，再收成一句“A4打印纸×2”。</p>
       </div>
+
+      <h2 id="figures">论文里可以直接用的图</h2>
+      <div class="card">
+        <p>下面这些图是毕业论文里通常要插入的。图已经画好，图题放在图的下方并居中，和学校要求一致。</p>
+        <p>放进 Word 的办法：在图上单击，用系统截图把整张白底图截下来，粘贴到论文里，再把图下面那一行字复制到图片下方。正文里写“如图 1 所示”时，数字要和这里的图号一致。</p>
+        <p>图 1、图 2、图 3 就是论文里点名要放的用例图、架构图和数据库 E-R 图。后面的功能模块图、业务流程图、类图、时序图，详细设计那一章也会用到。</p>
+      </div>
+
+      <h2 id="fig-usecase">谁可以用这个系统</h2>
+      <p>用例图回答的是：系统外面有哪几种人，每人能做哪些事。椭圆是一件事，火柴人是一种角色。线表示这个人会做这件事。登录和修改密码三种人都会做，所以三个人都连到了这两个椭圆。</p>
+      <figure class="diagram" id="fig1">
+        <svg viewBox="0 0 1100 790" role="img" aria-labelledby="cap1">
+          <rect x="200" y="64" width="700" height="680" fill="#f7fbfb" stroke="#1c2b33" stroke-width="1.5"/>
+          <text x="214" y="90" font-size="15" font-weight="700" fill="#1c2b33">办公用品采购管理系统</text>
+          <g fill="#fff" stroke="#1c2b33" stroke-width="1.4">
+            <ellipse cx="550" cy="140" rx="86" ry="22"/>
+            <ellipse cx="370" cy="220" rx="108" ry="22"/>
+            <ellipse cx="370" cy="290" rx="108" ry="22"/>
+            <ellipse cx="370" cy="360" rx="108" ry="22"/>
+            <ellipse cx="370" cy="430" rx="108" ry="22"/>
+            <ellipse cx="370" cy="500" rx="108" ry="22"/>
+            <ellipse cx="730" cy="220" rx="108" ry="22"/>
+            <ellipse cx="730" cy="290" rx="108" ry="22"/>
+            <ellipse cx="730" cy="360" rx="108" ry="22"/>
+            <ellipse cx="730" cy="450" rx="108" ry="22"/>
+            <ellipse cx="730" cy="520" rx="108" ry="22"/>
+            <ellipse cx="730" cy="590" rx="108" ry="22"/>
+            <ellipse cx="730" cy="660" rx="108" ry="22"/>
+            <ellipse cx="550" cy="700" rx="86" ry="22"/>
+          </g>
+          <g font-size="14" fill="#1c2b33" text-anchor="middle">
+            <text x="550" y="145">登录</text>
+            <text x="370" y="225">浏览商品</text>
+            <text x="370" y="295">提交采购申请</text>
+            <text x="370" y="365">查看我的申请</text>
+            <text x="370" y="435">修改被驳回申请</text>
+            <text x="370" y="505">查看我的订单</text>
+            <text x="730" y="225">审批采购申请</text>
+            <text x="730" y="295">查看全部申请</text>
+            <text x="730" y="365">查看订单</text>
+            <text x="730" y="455">用户管理</text>
+            <text x="730" y="525">商品管理</text>
+            <text x="730" y="595">公告管理</text>
+            <text x="730" y="665">维护订单状态</text>
+            <text x="550" y="705">修改密码</text>
+          </g>
+          <g fill="none" stroke="#1c2b33" stroke-width="2">
+            <g transform="translate(70,360)"><circle r="16"/><path d="M0 16 V50 M-18 32 H18 M0 50 L-16 78 M0 50 L16 78"/></g>
+            <g transform="translate(1030,260)"><circle r="16"/><path d="M0 16 V50 M-18 32 H18 M0 50 L-16 78 M0 50 L16 78"/></g>
+            <g transform="translate(1030,540)"><circle r="16"/><path d="M0 16 V50 M-18 32 H18 M0 50 L-16 78 M0 50 L16 78"/></g>
+          </g>
+          <g font-size="14" fill="#1c2b33" text-anchor="middle">
+            <text x="70" y="456">普通员工</text>
+            <text x="1030" y="356">审核人员</text>
+            <text x="1030" y="636">管理员</text>
+          </g>
+          <g fill="none" stroke="#5e6e76" stroke-width="1.2">
+            <path d="M88 392 H130 V220 H262"/>
+            <path d="M130 290 H262"/><path d="M130 360 H262"/>
+            <path d="M130 430 H262"/><path d="M130 500 H262"/>
+            <path d="M1012 292 H960 V220 H838"/>
+            <path d="M960 290 H838"/><path d="M960 360 H838"/>
+            <path d="M1012 572 H960 V450 H838"/>
+            <path d="M960 520 H838"/><path d="M960 590 H838"/><path d="M960 660 H838"/>
+            <path d="M70 344 V28 H1030 V244"/>
+            <path d="M550 28 V118"/>
+            <path d="M70 438 V748 H1030 V618"/>
+            <path d="M550 722 V748"/>
+          </g>
+        </svg>
+        <figcaption id="cap1">图 1 系统用例图</figcaption>
+      </figure>
+
+      <h2 id="fig-arch">系统分成哪几层</h2>
+      <p>架构图回答的是：一个人在浏览器里点一下，请求经过哪几站才碰到数据。从上到下读。演示的时候最下面是 H2，换成真实部署时是 MySQL，上面三层不用改。</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 920 520" role="img" aria-labelledby="cap2">
+          <g font-size="15" fill="#1c2b33" text-anchor="middle">
+            <rect x="300" y="16" width="320" height="52" rx="4" fill="#24343c"/>
+            <text x="460" y="48" fill="#fff">浏览器</text>
+            <rect x="140" y="110" width="640" height="78" fill="#e7f0f4" stroke="#1c2b33"/>
+            <text x="460" y="142" font-weight="700">表现层</text>
+            <text x="460" y="166">Vue + Element-UI，页面展示、收集输入、发送请求</text>
+            <rect x="140" y="220" width="640" height="78" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="252" font-weight="700">业务层</text>
+            <text x="460" y="276">Spring Boot：Controller 接待，Service 做决定</text>
+            <rect x="140" y="330" width="640" height="78" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="362" font-weight="700">数据访问层</text>
+            <text x="460" y="386">MyBatis-Plus 的 Mapper，负责读写数据表</text>
+          </g>
+          <g stroke="#8a5608" stroke-width="1.6" fill="#8a5608">
+            <path d="M460 68 V110"/><polygon points="460,110 455,100 465,100"/>
+            <path d="M460 188 V220"/><polygon points="460,220 455,210 465,210"/>
+            <path d="M460 298 V330"/><polygon points="460,330 455,320 465,320"/>
+            <path d="M460 408 V426 H310 V444" fill="none"/>
+            <path d="M460 426 H610 V444" fill="none"/>
+            <polygon points="310,444 305,434 315,434"/>
+            <polygon points="610,444 605,434 615,434"/>
+          </g>
+          <text x="478" y="98" font-size="12" fill="#8a5608">HTTP</text>
+          <rect x="220" y="444" width="180" height="44" fill="#fff" stroke="#1c2b33"/>
+          <rect x="520" y="444" width="180" height="44" fill="#fff" stroke="#1c2b33"/>
+          <text x="310" y="471" text-anchor="middle" font-size="14">MySQL</text>
+          <text x="610" y="471" text-anchor="middle" font-size="14">H2（演示）</text>
+        </svg>
+        <figcaption id="cap2">图 2 系统架构图</figcaption>
+      </figure>
+
+      <h2 id="fig-er">数据库里有哪些东西</h2>
+      <p>E-R 图里的矩形是一类要记住的事物，叫做实体。连线旁边的 1 和 n 读作“一个对多个”。例如一个员工可以交很多张申请，一张申请只属于一个员工。公告自己放着，不和其他表连在一起。</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 980 640" role="img" aria-labelledby="cap3">
+          <g font-size="13" fill="#1c2b33">
+            <g>
+              <rect x="40" y="70" width="200" height="168" fill="#fff" stroke="#1c2b33"/>
+              <rect x="40" y="70" width="200" height="32" fill="#e7f0f4"/>
+              <text x="140" y="92" text-anchor="middle" font-weight="700">用户</text>
+              <text x="52" y="124">用户编号、账号、密码</text>
+              <text x="52" y="146">姓名、角色、手机号</text>
+              <text x="52" y="168">创建时间</text>
+              <text x="52" y="210" fill="#5e6e76">表名 user</text>
+            </g>
+            <g>
+              <rect x="390" y="180" width="220" height="190" fill="#fff" stroke="#1c2b33"/>
+              <rect x="390" y="180" width="220" height="32" fill="#e7f0f4"/>
+              <text x="500" y="202" text-anchor="middle" font-weight="700">采购申请</text>
+              <text x="402" y="234">申请编号、申请人</text>
+              <text x="402" y="256">理由、申请时间</text>
+              <text x="402" y="278">状态、审核人</text>
+              <text x="402" y="300">审批意见、审批时间</text>
+              <text x="402" y="346" fill="#5e6e76">表名 purchase_apply</text>
+            </g>
+            <g>
+              <rect x="740" y="40" width="200" height="146" fill="#fff" stroke="#1c2b33"/>
+              <rect x="740" y="40" width="200" height="32" fill="#e7f0f4"/>
+              <text x="840" y="62" text-anchor="middle" font-weight="700">商品</text>
+              <text x="752" y="94">商品编号、名称、类别</text>
+              <text x="752" y="116">规格、单价、库存</text>
+              <text x="752" y="160" fill="#5e6e76">表名 goods</text>
+            </g>
+            <g>
+              <rect x="740" y="280" width="200" height="124" fill="#fff" stroke="#1c2b33"/>
+              <rect x="740" y="280" width="200" height="32" fill="#e7f0f4"/>
+              <text x="840" y="302" text-anchor="middle" font-weight="700">申请明细</text>
+              <text x="752" y="334">明细编号、申请编号</text>
+              <text x="752" y="356">商品编号、采购数量</text>
+              <text x="752" y="384" fill="#5e6e76">表名 purchase_apply_item</text>
+            </g>
+            <g>
+              <rect x="390" y="470" width="220" height="124" fill="#fff" stroke="#1c2b33"/>
+              <rect x="390" y="470" width="220" height="32" fill="#e7f0f4"/>
+              <text x="500" y="492" text-anchor="middle" font-weight="700">采购订单</text>
+              <text x="402" y="524">订单编号、申请编号</text>
+              <text x="402" y="546">订单状态、生成时间</text>
+              <text x="402" y="574" fill="#5e6e76">表名 purchase_order</text>
+            </g>
+            <g>
+              <rect x="40" y="430" width="200" height="124" fill="#fff" stroke="#1c2b33"/>
+              <rect x="40" y="430" width="200" height="32" fill="#e7f0f4"/>
+              <text x="140" y="452" text-anchor="middle" font-weight="700">公告</text>
+              <text x="52" y="484">公告编号、标题</text>
+              <text x="52" y="506">内容、发布时间</text>
+              <text x="52" y="534" fill="#5e6e76">表名 notice</text>
+            </g>
+          </g>
+          <g fill="none" stroke="#1c2b33" stroke-width="1.4">
+            <path d="M240 150 H390"/><path d="M240 190 H390"/>
+            <path d="M610 250 H740"/><path d="M840 186 V280"/>
+            <path d="M500 370 V470"/>
+          </g>
+          <g font-size="13" fill="#8a5608">
+            <text x="268" y="142">1</text><text x="360" y="142">n  申请</text>
+            <text x="268" y="182">1</text><text x="360" y="182">n  审核</text>
+            <text x="628" y="242">1</text><text x="700" y="242">n  包含</text>
+            <text x="848" y="210">1</text><text x="848" y="268">n</text>
+            <text x="508" y="420">1</text><text x="508" y="458">1  生成</text>
+          </g>
+          <text x="140" y="580" font-size="13" fill="#5e6e76">公告不与其他表关联</text>
+        </svg>
+        <figcaption id="cap3">图 3 数据库 E-R 图</figcaption>
+      </figure>
+
+      <h2 id="fig-module">系统分成哪些功能</h2>
+      <p>功能模块图就是目录。上面是整个系统，下面六块对应论文里的六个模块，也对应左侧菜单里能点开的功能。</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 980 230" role="img" aria-labelledby="cap4">
+          <rect x="310" y="16" width="360" height="46" fill="#24343c"/>
+          <text x="490" y="45" text-anchor="middle" fill="#fff" font-size="16">办公用品采购管理系统</text>
+          <path d="M490 62 V92 M90 92 H890 M90 92 V116 M250 92 V116 M410 92 V116 M570 92 V116 M730 92 V116 M890 92 V116" fill="none" stroke="#1c2b33"/>
+          <g font-size="15" text-anchor="middle" fill="#1c2b33">
+            <rect x="20" y="116" width="140" height="64" fill="#e7f0f4" stroke="#1c2b33"/><text x="90" y="153">用户管理</text>
+            <rect x="180" y="116" width="140" height="64" fill="#fff" stroke="#1c2b33"/><text x="250" y="153">商品管理</text>
+            <rect x="340" y="116" width="140" height="64" fill="#fff" stroke="#1c2b33"/><text x="410" y="153">采购申请</text>
+            <rect x="500" y="116" width="140" height="64" fill="#fff" stroke="#1c2b33"/><text x="570" y="153">采购审批</text>
+            <rect x="660" y="116" width="140" height="64" fill="#fff" stroke="#1c2b33"/><text x="730" y="153">订单管理</text>
+            <rect x="820" y="116" width="140" height="64" fill="#fff" stroke="#1c2b33"/><text x="890" y="153">系统公告</text>
+          </g>
+        </svg>
+        <figcaption id="cap4">图 4 系统功能模块图</figcaption>
+      </figure>
+
+      <h2 id="fig-flow">一张申请单怎么往下走</h2>
+      <p>流程图按时间读。菱形是判断。驳回不是结束，员工改完可以再交，所以箭头绕回“待审批”。</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 920 760" role="img" aria-labelledby="cap5">
+          <g font-size="14" text-anchor="middle" fill="#1c2b33">
+            <rect x="370" y="16" width="180" height="40" rx="20" fill="#24343c"/>
+            <text x="460" y="42" fill="#fff">开始</text>
+            <rect x="330" y="84" width="260" height="48" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="114">员工登录并浏览商品</text>
+            <rect x="330" y="160" width="260" height="48" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="190">填写数量和理由并提交</text>
+            <rect x="330" y="236" width="260" height="48" fill="#e7f0f4" stroke="#1c2b33"/>
+            <text x="460" y="266">申请状态：待审批</text>
+            <polygon points="460,312 590,372 460,432 330,372" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="368">审核是否</text>
+            <text x="460" y="388">通过</text>
+            <rect x="330" y="460" width="260" height="48" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="490">生成订单，状态为待采购</text>
+            <rect x="330" y="536" width="260" height="48" fill="#fff" stroke="#1c2b33"/>
+            <text x="460" y="566">管理员更新到货进度</text>
+            <rect x="370" y="620" width="180" height="40" rx="20" fill="#24343c"/>
+            <text x="460" y="646" fill="#fff">结束</text>
+            <rect x="680" y="348" width="200" height="48" fill="#fff" stroke="#1c2b33"/>
+            <text x="780" y="378">填写驳回意见</text>
+            <rect x="680" y="430" width="200" height="56" fill="#fff" stroke="#1c2b33"/>
+            <text x="780" y="454">员工修改后</text>
+            <text x="780" y="474">重新提交</text>
+          </g>
+          <g fill="none" stroke="#1c2b33" stroke-width="1.4">
+            <path d="M460 56 V84"/><path d="M460 132 V160"/><path d="M460 208 V236"/><path d="M460 284 V312"/>
+            <path d="M460 432 V460"/><path d="M460 508 V536"/><path d="M460 584 V620"/>
+            <path d="M590 372 H680"/><path d="M780 396 V430"/><path d="M880 458 H908 V260 H590"/>
+          </g>
+          <g font-size="13" fill="#8a5608">
+            <polygon points="590,260 600,254 600,266" fill="#1c2b33"/><text x="500" y="452">是</text>
+            <text x="620" y="364">否</text>
+          </g>
+        </svg>
+        <figcaption id="cap5">图 5 采购业务流程图</figcaption>
+      </figure>
+
+      <h2 id="fig-class">类和类之间是什么关系</h2>
+      <p>类图看的是代码里的名词怎么连。第一张是要存进数据库的六个类。第二张只画采购这一条线：页面找到控制器，控制器找到业务类，业务类再找保管表的 Mapper。空心三角在这张图里不用记，线旁边的字说明谁使用谁就够了。</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 980 520" role="img" aria-labelledby="cap6">
+          <g font-size="13" fill="#1c2b33">
+            <g><rect x="30" y="40" width="180" height="132" fill="#fff" stroke="#1c2b33"/><rect x="30" y="40" width="180" height="28" fill="#e7f0f4"/><text x="120" y="59" text-anchor="middle" font-weight="700">User</text><text x="42" y="90">userId</text><text x="42" y="110">username</text><text x="42" y="130">role</text><text x="42" y="154" fill="#5e6e76">用户</text></g>
+            <g><rect x="300" y="40" width="200" height="156" fill="#fff" stroke="#1c2b33"/><rect x="300" y="40" width="200" height="28" fill="#e7f0f4"/><text x="400" y="59" text-anchor="middle" font-weight="700">PurchaseApply</text><text x="312" y="90">applyId</text><text x="312" y="110">applyUserId</text><text x="312" y="130">auditStatus</text><text x="312" y="174" fill="#5e6e76">采购申请</text></g>
+            <g><rect x="580" y="40" width="180" height="132" fill="#fff" stroke="#1c2b33"/><rect x="580" y="40" width="180" height="28" fill="#e7f0f4"/><text x="670" y="59" text-anchor="middle" font-weight="700">Goods</text><text x="592" y="90">goodsId</text><text x="592" y="110">goodsName</text><text x="592" y="130">price / stock</text><text x="592" y="154" fill="#5e6e76">商品</text></g>
+            <g><rect x="580" y="240" width="210" height="132" fill="#fff" stroke="#1c2b33"/><rect x="580" y="240" width="210" height="28" fill="#e7f0f4"/><text x="685" y="259" text-anchor="middle" font-weight="700">PurchaseApplyItem</text><text x="592" y="290">itemId</text><text x="592" y="310">applyId / goodsId</text><text x="592" y="330">buyNum</text><text x="592" y="354" fill="#5e6e76">申请明细</text></g>
+            <g><rect x="300" y="300" width="200" height="132" fill="#fff" stroke="#1c2b33"/><rect x="300" y="300" width="200" height="28" fill="#e7f0f4"/><text x="400" y="319" text-anchor="middle" font-weight="700">PurchaseOrder</text><text x="312" y="350">orderId</text><text x="312" y="370">applyId</text><text x="312" y="390">orderStatus</text><text x="312" y="414" fill="#5e6e76">采购订单</text></g>
+            <g><rect x="30" y="300" width="180" height="120" fill="#fff" stroke="#1c2b33"/><rect x="30" y="300" width="180" height="28" fill="#e7f0f4"/><text x="120" y="319" text-anchor="middle" font-weight="700">Notice</text><text x="42" y="350">noticeId</text><text x="42" y="370">title</text><text x="42" y="394" fill="#5e6e76">公告，独立存在</text></g>
+          </g>
+          <g fill="none" stroke="#1c2b33">
+            <path d="M210 100 H300"/><path d="M500 196 H590 V240"/><path d="M670 172 V240"/><path d="M400 196 V300"/>
+          </g>
+          <g font-size="12" fill="#8a5608">
+            <text x="230" y="92">1</text><text x="270" y="92">n</text>
+            <text x="520" y="214">1 对 n</text>
+            <text x="676" y="210">1</text><text x="676" y="232">n</text>
+            <text x="408" y="250">1 对 1</text>
+          </g>
+        </svg>
+        <figcaption id="cap6">图 6 实体类图</figcaption>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="0 0 980 300" role="img" aria-labelledby="cap7">
+          <g font-size="14" text-anchor="middle" fill="#1c2b33">
+            <rect x="20" y="90" width="200" height="70" fill="#e7f0f4" stroke="#1c2b33"/>
+            <text x="120" y="120">ApplySubmit.vue</text><text x="120" y="142" font-size="12" fill="#5e6e76">页面</text>
+            <rect x="270" y="90" width="230" height="70" fill="#fff" stroke="#1c2b33"/>
+            <text x="385" y="120">PurchaseApplyController</text><text x="385" y="142" font-size="12" fill="#5e6e76">接待请求</text>
+            <rect x="550" y="40" width="240" height="70" fill="#fff" stroke="#1c2b33"/>
+            <text x="670" y="70">PurchaseApplyServiceImpl</text><text x="670" y="92" font-size="12" fill="#5e6e76">提交、重提、审批</text>
+            <rect x="550" y="160" width="240" height="70" fill="#fff" stroke="#1c2b33"/>
+            <text x="670" y="190">ApplyViewAssembler</text><text x="670" y="212" font-size="12" fill="#5e6e76">把编号译成名称和金额</text>
+            <rect x="830" y="100" width="130" height="90" fill="#fff" stroke="#1c2b33"/>
+            <text x="895" y="132">Mapper</text><text x="895" y="156" font-size="12">申请 / 明细</text><text x="895" y="176" font-size="12">订单 / 商品</text>
+          </g>
+          <g fill="none" stroke="#8a5608" stroke-width="1.4">
+            <path d="M220 125 H270"/><polygon points="270,125 260,120 260,130" fill="#8a5608"/>
+            <path d="M500 115 H550"/><polygon points="550,115 540,110 540,120" fill="#8a5608"/>
+            <path d="M500 145 H550 V195"/><polygon points="550,195 540,185 560,185" fill="#8a5608"/>
+            <path d="M790 75 H830 V120"/><polygon points="830,120 820,110 840,110" fill="#8a5608"/>
+          </g>
+          <g font-size="12" fill="#8a5608">
+            <text x="236" y="116">调用</text><text x="512" y="106">调用</text><text x="512" y="168">组装</text><text x="800" y="64">读写表</text>
+          </g>
+        </svg>
+        <figcaption id="cap7">图 7 采购模块类图</figcaption>
+      </figure>
+
+      <h2 id="fig-seq">一次点击，大家按什么顺序说话</h2>
+      <p>时序图从上往下就是时间。横着的箭头是一次调用。先看登录，再看审核通过时为什么会多出一张订单。</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 920 420" role="img" aria-labelledby="cap8">
+          <g font-size="14" text-anchor="middle" fill="#1c2b33">
+            <rect x="40" y="16" width="120" height="36" fill="#e7f0f4" stroke="#1c2b33"/><text x="100" y="40">员工</text>
+            <rect x="230" y="16" width="170" height="36" fill="#fff" stroke="#1c2b33"/><text x="315" y="40">UserController</text>
+            <rect x="470" y="16" width="170" height="36" fill="#fff" stroke="#1c2b33"/><text x="555" y="40">UserServiceImpl</text>
+            <rect x="710" y="16" width="160" height="36" fill="#fff" stroke="#1c2b33"/><text x="790" y="40">用户表</text>
+          </g>
+          <g stroke="#c5d0d4" stroke-dasharray="4 4">
+            <path d="M100 52 V390"/><path d="M315 52 V390"/><path d="M555 52 V390"/><path d="M790 52 V390"/>
+          </g>
+          <g font-size="13" fill="#1c2b33">
+            <path d="M100 100 H315" stroke="#1c2b33" marker-end="url(#arr)"/><text x="130" y="92">1 提交账号和密码</text>
+            <path d="M315 150 H555" stroke="#1c2b33"/><text x="330" y="142">2 请核对密码</text>
+            <path d="M555 200 H790" stroke="#1c2b33"/><text x="575" y="192">3 按账号查出用户</text>
+            <path d="M790 250 H555" stroke="#1c2b33"/><text x="600" y="242">4 返回用户和密文</text>
+            <path d="M555 300 H315" stroke="#1c2b33"/><text x="360" y="292">5 密文比对成功，签发通行证</text>
+            <path d="M315 350 H100" stroke="#1c2b33"/><text x="140" y="342">6 登录成功</text>
+          </g>
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c2b33"/></marker></defs>
+        </svg>
+        <figcaption id="cap8">图 8 用户登录时序图</figcaption>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="0 0 980 460" role="img" aria-labelledby="cap9">
+          <g font-size="13" text-anchor="middle" fill="#1c2b33">
+            <rect x="20" y="16" width="110" height="36" fill="#e7f0f4" stroke="#1c2b33"/><text x="75" y="40">审核人员</text>
+            <rect x="180" y="16" width="190" height="36" fill="#fff" stroke="#1c2b33"/><text x="275" y="40">PurchaseApplyController</text>
+            <rect x="420" y="16" width="200" height="36" fill="#fff" stroke="#1c2b33"/><text x="520" y="40">PurchaseApplyServiceImpl</text>
+            <rect x="670" y="16" width="120" height="36" fill="#fff" stroke="#1c2b33"/><text x="730" y="40">申请表</text>
+            <rect x="830" y="16" width="120" height="36" fill="#fff" stroke="#1c2b33"/><text x="890" y="40">订单表</text>
+          </g>
+          <g stroke="#c5d0d4" stroke-dasharray="4 4">
+            <path d="M75 52 V430"/><path d="M275 52 V430"/><path d="M520 52 V430"/><path d="M730 52 V430"/><path d="M890 52 V430"/>
+          </g>
+          <g font-size="13" fill="#1c2b33" stroke="#1c2b33">
+            <path d="M75 90 H275"/><text x="90" y="82" stroke="none">1 选择通过</text>
+            <path d="M275 140 H520"/><text x="290" y="132" stroke="none">2 执行审批</text>
+            <path d="M520 190 H730"/><text x="535" y="182" stroke="none">3 查这张申请，必须还是待审批</text>
+            <path d="M520 250 H730"/><text x="535" y="242" stroke="none">4 状态改为已通过，写下意见</text>
+            <path d="M520 310 H890"/><text x="560" y="302" stroke="none">5 新增订单，状态为待采购</text>
+            <path d="M520 370 H275"/><text x="330" y="362" stroke="none">6 两步都成功才一起保存</text>
+            <path d="M275 410 H75"/><text x="100" y="402" stroke="none">7 页面显示审批已保存</text>
+          </g>
+        </svg>
+        <figcaption id="cap9">图 9 采购审批时序图</figcaption>
+      </figure>
 
       <h2 id="dict-common">词典：公共小工具</h2>
       <p class="small">这些类没有业务故事，但别的类天天用它们。知道它们是“公用文具”就够了。</p>
