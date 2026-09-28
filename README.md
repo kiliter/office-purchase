@@ -21,7 +21,7 @@ docker run --rm -p 8080:8080 ghcr.io/kiliter/office-purchase:latest
 | 审核人员 | audit01 | 审批申请，通过后自动生成订单 |
 | 普通员工 | staff01 | 提交申请，查看自己的申请和订单 |
 
-代码说明书给读源码的同学：系统跑起来后打开 http://127.0.0.1:8080/guide.html ，也可以直接打开仓库里的 `frontend/public/guide.html`。
+代码说明书是写给零基础同学的：系统跑起来后打开 http://127.0.0.1:8080/guide.html ，也可以直接打开仓库里的 `frontend/public/guide.html`。它先用一次申领把过程讲完，再按类名当词典查。
 
 演示数据在内存里。容器停止或删除后，新增的申请和订单会消失，下次启动恢复成初始演示数据。这是演示环境的预期行为，不是故障。
 

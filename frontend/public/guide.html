@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>办公用品采购系统 · 代码说明书</title>
+  <title>办公用品采购系统 · 给新生的代码说明书</title>
   <style>
     :root {
       --ink: #1c2b33;
       --cabinet: #24343c;
       --paper: #eef2f1;
-      --card: #ffffff;
+      --card: #fff;
       --line: #d5dbd8;
       --muted: #5e6e76;
       --pencil: #2f6280;
@@ -22,476 +22,238 @@
       color: var(--ink);
       background: var(--paper);
       font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-      line-height: 1.65;
+      font-size: 17px;
+      line-height: 1.75;
     }
     a { color: var(--pencil); }
     :focus-visible { outline: 2px solid var(--pencil); outline-offset: 2px; }
-    .layout { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+    .layout { display: grid; grid-template-columns: 270px 1fr; min-height: 100vh; }
     nav {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: auto;
-      background: var(--cabinet);
-      color: #f4f7f6;
-      padding: 24px 16px 40px;
+      position: sticky; top: 0; height: 100vh; overflow: auto;
+      background: var(--cabinet); color: #f4f7f6; padding: 22px 16px 40px;
     }
-    nav h1 { margin: 0 0 8px; font-size: 22px; font-weight: 700; }
-    nav p { margin: 0 0 14px; color: #c9d5d0; font-size: 13px; }
-    nav input {
-      width: 100%;
-      border: 0;
-      border-radius: 4px;
-      padding: 8px 10px;
-      margin-bottom: 14px;
-      font: inherit;
-    }
-    nav a {
-      display: block;
-      color: #e6eeeb;
-      text-decoration: none;
-      padding: 4px 8px;
-      border-left: 3px solid transparent;
-      font-size: 13px;
-    }
+    nav h1 { margin: 0 0 8px; font-size: 22px; }
+    nav .hint { margin: 0 0 12px; color: #c9d5d0; font-size: 13px; }
+    nav input { width: 100%; border: 0; padding: 8px 10px; margin-bottom: 12px; font: inherit; }
+    nav a { display: block; color: #e6eeeb; text-decoration: none; padding: 5px 8px; border-left: 3px solid transparent; font-size: 14px; }
     nav a:hover, nav a:focus { border-left-color: #c9a15b; background: #314650; }
-    nav .group { margin: 14px 0 6px; color: #c9a15b; font-size: 12px; letter-spacing: 0.08em; }
-    main { padding: 36px 40px 80px; max-width: 920px; }
-    h2 { margin: 36px 0 12px; font-size: 26px; }
-    h3 { margin: 0 0 8px; font-size: 20px; }
-    .lead { font-size: 17px; }
-    .flow { display: grid; gap: 8px; margin: 16px 0 8px; }
-    .flow div { background: var(--card); border: 1px solid var(--line); padding: 10px 14px; }
-    .flow b { color: var(--manila); }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      padding: 16px 18px 8px;
-      margin: 12px 0;
-    }
-    .pkg { margin: 0 0 4px; color: var(--manila); font-size: 12px; letter-spacing: 0.06em; }
-    .job { margin: 0 0 8px; }
-    ul { margin: 8px 0 12px; padding-left: 18px; }
-    code { background: var(--chip); padding: 0 4px; font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.92em; }
-    .with { color: var(--muted); font-size: 14px; }
+    nav .group { margin: 16px 0 6px; color: #c9a15b; font-size: 12px; letter-spacing: 0.08em; }
+    main { padding: 36px 42px 80px; max-width: 880px; }
+    h2 { font-size: 28px; margin: 40px 0 10px; }
+    h3 { margin: 0 0 8px; font-size: 22px; }
+    .en { color: var(--muted); font-size: 14px; font-weight: 500; }
+    .card { background: var(--card); border: 1px solid var(--line); padding: 16px 18px; margin: 12px 0; }
+    .step { background: var(--card); border-left: 4px solid var(--pencil); padding: 12px 16px; margin: 10px 0; }
+    .step b { color: var(--manila); }
+    code { background: var(--chip); padding: 0 4px; font-family: Consolas, "SFMono-Regular", monospace; font-size: 0.92em; }
+    .small { color: var(--muted); font-size: 15px; }
     @media (max-width: 860px) {
       .layout { grid-template-columns: 1fr; }
       nav { position: relative; height: auto; }
-      main { padding: 24px 16px 64px; }
+      main { padding: 22px 16px 64px; }
     }
   </style>
 </head>
 <body>
   <div class="layout">
     <nav>
-      <h1>代码说明书</h1>
-      <p>给读这个毕设的同学。先看一条申请怎么走，再按类名查。</p>
-      <input id="q" type="search" placeholder="搜类名或职责" aria-label="搜索类" />
-      <div class="group">先读</div>
-      <a href="#flow">一条申请怎么走</a>
-      <a href="#layers">分层约定</a>
-      <div class="group">启动和公共类</div>
-      <a href="#PurchaseApplication">PurchaseApplication</a>
-      <a href="#Result">Result / PageResult</a>
-      <a href="#BizException">BizException</a>
-      <a href="#RoleConst">RoleConst / StatusConst</a>
-      <a href="#UserContext">UserContext</a>
-      <a href="#RequireRole">RequireRole</a>
-      <div class="group">配置和安全</div>
-      <a href="#WebMvcConfig">WebMvcConfig</a>
-      <a href="#AuthInterceptor">AuthInterceptor</a>
-      <a href="#JwtUtil">JwtUtil</a>
-      <a href="#PasswordConfig">PasswordConfig</a>
-      <a href="#MybatisPlusConfig">MybatisPlusConfig</a>
-      <a href="#DemoDataInitializer">DemoDataInitializer</a>
-      <a href="#GlobalExceptionHandler">GlobalExceptionHandler</a>
-      <a href="#SpaController">SpaController</a>
-      <div class="group">控制器</div>
-      <a href="#UserController">UserController</a>
-      <a href="#GoodsController">GoodsController</a>
-      <a href="#PurchaseApplyController">PurchaseApplyController</a>
-      <a href="#PurchaseOrderController">PurchaseOrderController</a>
-      <a href="#NoticeController">NoticeController</a>
-      <a href="#HomeController">HomeController</a>
-      <div class="group">业务</div>
-      <a href="#UserServiceImpl">UserServiceImpl</a>
-      <a href="#GoodsServiceImpl">GoodsServiceImpl</a>
-      <a href="#PurchaseApplyServiceImpl">PurchaseApplyServiceImpl</a>
-      <a href="#PurchaseOrderServiceImpl">PurchaseOrderServiceImpl</a>
-      <a href="#NoticeServiceImpl">NoticeServiceImpl</a>
-      <a href="#HomeServiceImpl">HomeServiceImpl</a>
-      <a href="#ApplyViewAssembler">ApplyViewAssembler</a>
-      <div class="group">数据</div>
-      <a href="#entities">实体类</a>
-      <a href="#mappers">Mapper</a>
-      <a href="#dtos">DTO</a>
-      <a href="#vos">VO</a>
-      <a href="#PurchaseFlowTest">PurchaseFlowTest</a>
-      <div class="group">前端</div>
-      <a href="#frontend">页面和请求</a>
+      <h1>先看这里</h1>
+      <p class="hint">不用一次读完。先读故事，遇到不认识的类名再回来查。</p>
+      <input id="q" type="search" placeholder="搜一个词，比如订单" aria-label="搜索" />
+      <div class="group">开始</div>
+      <a href="#start">这个系统是干什么的</a>
+      <a href="#words">六个词</a>
+      <a href="#story">跟着小王走一遍</a>
+      <div class="group">故事里的类</div>
+      <a href="#Login">登录页面</a>
+      <a href="#UserController">用户入口</a>
+      <a href="#UserServiceImpl">用户业务</a>
+      <a href="#JwtUtil">通行证</a>
+      <a href="#AuthInterceptor">门口保安</a>
+      <a href="#GoodsController">商品入口</a>
+      <a href="#PurchaseApplyServiceImpl">申请怎么保存</a>
+      <a href="#PurchaseOrderServiceImpl">订单怎么来的</a>
+      <div class="group">词典</div>
+      <a href="#dict-common">公共小工具</a>
+      <a href="#dict-config">启动时的配置</a>
+      <a href="#dict-controller">所有入口</a>
+      <a href="#dict-service">所有业务</a>
+      <a href="#dict-data">表、表格和页面</a>
     </nav>
     <main>
-      <p class="pkg">OFFICE PURCHASE</p>
-      <h2 style="margin-top:0">项目代码说明书</h2>
-      <p class="lead">这个系统把办公用品采购从纸质单变成三条线：员工提交申请，审核人员通过或驳回，通过后生成订单。代码按这个过程分层，不要一上来从第一个文件逐行读。</p>
+      <p class="en">给第一次读代码的同学</p>
+      <h2 style="margin-top:0">你不用先把所有文件看懂</h2>
+      <p>这份说明书假设你是大一新生，还没学过 Spring Boot，也分不清什么是接口。你只要会用浏览器，就能先把这个系统看明白。</p>
+      <p>代码很多，是因为它把一件小事拆开了：有人负责接待，有人负责做决定，有人负责往本子上记账。你先记住这件事，再去认每一块代码的名字。</p>
 
-      <h2 id="flow">一条申请怎么走</h2>
-      <div class="flow">
-        <div><b>1. 登录</b>　Login.vue 调用 <code>POST /user/login</code>。UserController 交给 UserServiceImpl，密码用 BCrypt 比对，JwtUtil 签发令牌。</div>
-        <div><b>2. 之后的请求</b>　浏览器在请求头放 <code>Authorization: Bearer 令牌</code>。AuthInterceptor 先解析令牌，再按方法上的 RequireRole 决定能不能进。</div>
-        <div><b>3. 提交</b>　员工调用 <code>POST /apply/submit</code>。PurchaseApplyServiceImpl 写入申请主表和明细，状态是“待审批”。</div>
-        <div><b>4. 审批</b>　审核人员调用 <code>POST /apply/audit</code>。驳回必须写意见。通过时，同一事务里插入一条“待采购”订单。</div>
-        <div><b>5. 跟单</b>　管理员调用 <code>PUT /order/status</code>，把订单改成采购中、已到货或已完成。这里不扣库存。</div>
-      </div>
-
-      <h2 id="layers">分层约定</h2>
+      <h2 id="start">这个系统是干什么的</h2>
       <div class="card">
-        <p class="job">Controller 只接收参数和返回 Result。业务规则放在 ServiceImpl。Mapper 只负责和表说话，本项目没有手写 SQL。DTO 是前端提交进来的表单，VO 是返回给页面的展示对象，实体类对应数据库表。</p>
-        <p class="with">包名统一是 <code>com.office.purchase</code>。接口返回都是 <code>{"code":200,"msg":"...","data":...}</code>。401 表示没登录，403 表示角色不对，500 表示业务没通过。</p>
+        <p>办公室里的打印纸、笔、文件夹用完了，以前要填一张纸质申请单，拿去找人签字，签完再让行政去买。</p>
+        <p>这个系统把这件事搬到网页上。员工在网页里选东西、写理由。审核的人在网页里点“通过”或“驳回”。通过之后，系统自动记下一张订单。管理员再把订单改成“采购中”“已到货”或“已完成”。</p>
+        <p>演示账号的密码都是 <code>123456</code>。员工 <code>staff01</code>，审核 <code>audit01</code>，管理员 <code>admin</code>。你可以自己登进去点一遍，再回来对故事。</p>
       </div>
 
-      <h2>启动和公共类</h2>
+      <h2 id="words">先认识六个词</h2>
+      <div class="card" id="words-card">
+        <p><b>类。</b>一个有名字的代码文件，里面放一组相关的动作。文件名 <code>UserController.java</code> 里的类就叫 UserController。你可以把类想成一个岗位。</p>
+        <p><b>前端。</b>你在浏览器里看见的页面、按钮、表格。这个项目的前端用 Vue 写，文件大多是 <code>.vue</code>。</p>
+        <p><b>后端。</b>页面背后那个做判断的程序。它决定密码对不对、这个人能不能审批。后端用 Java 写，跑在 Spring Boot 里。</p>
+        <p><b>数据库。</b>用来记住事情的表格本子。商品、申请、订单都记在不同的表里。演示环境用的是 H2，数据放在内存里，程序一关，新填的内容就没了。</p>
+        <p><b>接口。</b>页面找后端办事的地址。比如登录的地址是 <code>/user/login</code>。页面把账号密码送过去，后端回一句“登录成功”和一张通行证。</p>
+        <p><b>表。</b>数据库里的一张格子表。一行是一件事，比如一种商品，或一张申请单。</p>
+      </div>
 
-      <article class="card" id="PurchaseApplication">
-        <p class="pkg">启动类</p>
-        <h3>PurchaseApplication</h3>
-        <p class="job">程序入口。Spring Boot 从这里启动内置 Tomcat，<code>@MapperScan</code> 扫描全部 Mapper。</p>
-        <ul><li><code>main</code>：调用 <code>SpringApplication.run</code>。</li></ul>
-      </article>
+      <h2 id="story">跟着小王走一遍</h2>
+      <p>小王是普通员工。办公室的 A4 纸不够了。下面每一步只告诉你：谁在说话，说到了哪一个类。</p>
 
-      <article class="card" id="Result">
-        <p class="pkg">common</p>
-        <h3>Result、PageResult</h3>
-        <p class="job">Result 是所有接口的外壳。PageResult 是分页外壳，页面表格使用 total、current、size、records。</p>
-        <ul>
-          <li><code>Result.ok</code> / <code>fail</code>：成功码 200，失败可以指定 401、403、500。</li>
-          <li><code>PageResult.of</code> / <code>empty</code>：有数据的一页，或员工还没有订单时的空页。</li>
-        </ul>
-      </article>
+      <div class="step" id="Login">
+        <b>1. 打开网页，输入账号密码</b>
+        <p>你看见的登录页是 <span class="en">Login.vue</span>。它只负责把你输入的字收下来，自己并不检查密码对不对。</p>
+        <p>它把账号和密码送到后端的 <span class="en">UserController</span>。这个类是“用户这件事的前台”。前台不自己做决定，把活交给 <span class="en">UserServiceImpl</span>。</p>
+        <p>UserServiceImpl 去用户表里找这个账号。数据库里的密码不是明文 <code>123456</code>，而是打乱后的一长串。<span class="en">PasswordConfig</span> 提供比对工具。对上了，<span class="en">JwtUtil</span> 发一张临时通行证。页面把它记在浏览器里。</p>
+      </div>
 
-      <article class="card" id="BizException">
-        <p class="pkg">common</p>
-        <h3>BizException</h3>
-        <p class="job">可预期的业务错误，例如“仅待审批的申请可以审批”。抛出后由 GlobalExceptionHandler 转成前端能直接显示的句子，不把堆栈给页面。</p>
-      </article>
+      <div class="step">
+        <b>2. 之后每点一个按钮，都要出示通行证</b>
+        <p><span class="en">request.js</span> 负责在每次请求上贴上这张通行证。<span class="en">AuthInterceptor</span> 是门口保安：没有通行证，或者通行证过期，就请你重新登录。保安还会看方法上的标记 <span class="en">RequireRole</span>。那是一张“只允许管理员”或“只允许审核员”的牌子。员工硬闯管理员的功能，会被拦住。</p>
+        <p>保安确认身份后，把这个人暂时放到 <span class="en">UserContext</span> 里。后面的代码就能知道“现在操作的是小王”，不用再问一遍。</p>
+      </div>
 
-      <article class="card" id="RoleConst">
-        <p class="pkg">common</p>
-        <h3>RoleConst、StatusConst</h3>
-        <p class="job">把角色和状态集中成常量，避免各处手写字符串写错。</p>
-        <ul>
-          <li>角色：<code>admin</code> 管理员、<code>audit</code> 审核人员、<code>staff</code> 普通员工。<code>valid</code> 用来检查新用户的角色是否合法。</li>
-          <li>申请状态：待审批、已通过、已驳回。</li>
-          <li>订单状态：待采购、采购中、已到货、已完成。管理员只能改成这四种。</li>
-        </ul>
-      </article>
+      <div class="step">
+        <b>3. 看有哪些商品</b>
+        <p>商品页面是 <span class="en">GoodsList.vue</span>。它找 <span class="en">GoodsController</span>，再找 <span class="en">GoodsServiceImpl</span>，最后由 <span class="en">GoodsMapper</span> 去商品表把名称、单价、库存读出来。</p>
+        <p>Mapper 可以理解成“专门翻某一张表的人”。他不会决定能不能买，只会按要求读和写。</p>
+      </div>
 
-      <article class="card" id="UserContext">
-        <p class="pkg">common</p>
-        <h3>UserContext</h3>
-        <p class="job">用 ThreadLocal 保存当前请求的登录用户。拦截器放入，请求结束必须 <code>clear</code>，否则线程池复用时会串到下一个人。</p>
-      </article>
+      <div class="step" id="PurchaseApplyServiceImpl">
+        <b>4. 选好数量，写下理由，提交申请</b>
+        <p>提交页面是 <span class="en">ApplySubmit.vue</span>。数量填 0 的商品不会被送出去。</p>
+        <p>请求到了 <span class="en">PurchaseApplyController</span>。它先确认你是员工，再把你的用户编号交给 <span class="en">PurchaseApplyServiceImpl</span>。这个类是整件事的核心：</p>
+        <p>它检查商品还在不在、同一张单里有没有把同一种东西选了两次。然后在申请表写一行，状态写成“待审批”，再在明细表写下每种东西要多少。这两下必须一起成功。如果写到一半失败，两下都取消，避免出现“有申请单但没有买什么”的空单。</p>
+      </div>
 
-      <article class="card" id="RequireRole">
-        <p class="pkg">annotation</p>
-        <h3>RequireRole</h3>
-        <p class="job">标在控制器方法上，声明哪些角色可以调用。不标的接口只要登录就能访问，例如查看商品和公告。</p>
-      </article>
+      <div class="step">
+        <b>5. 审核员登录，点通过或驳回</b>
+        <p>审核员看到的列表来自 <span class="en">ApplyTable.vue</span>。点通过或驳回，还是进 PurchaseApplyController，但这次牌子上写着“只有审核员”。</p>
+        <p>驳回时必须写原因，否则小王不知道改什么。通过时，PurchaseApplyServiceImpl 把申请改成“已通过”，并立刻新建一张订单，状态是“待采购”。订单不是人手新建的，是审批通过时自动出现的。</p>
+        <p>如果小王的申请被驳回，他可以在“我的申请”里修改数量和理由，再提交。这叫重提。重提后，上次的驳回意见会被清掉，状态回到“待审批”。</p>
+      </div>
 
-      <h2>配置和安全</h2>
+      <div class="step" id="PurchaseOrderServiceImpl">
+        <b>6. 管理员更新到货进度</b>
+        <p>订单页面是 <span class="en">OrderList.vue</span>。小王只能看见自己的订单。管理员能看见全部，并且能把状态改成采购中、已到货或已完成。真正改状态的是 <span class="en">PurchaseOrderServiceImpl</span>。</p>
+        <p>注意：申请通过以后，商品库存的数字不会自动减少。库存要管理员到商品页面里自己改。这不是漏做，论文里把“自动扣库存”留成了以后再做的功能。</p>
+      </div>
 
-      <article class="card" id="WebMvcConfig">
-        <p class="pkg">config</p>
-        <h3>WebMvcConfig</h3>
-        <p class="job">注册登录拦截器，并允许前端开发服务器跨域。登录接口 <code>/user/login</code> 被排除，其余接口都要经过 AuthInterceptor。</p>
-      </article>
+      <div class="card">
+        <h3>页面上的字是怎么拼出来的</h3>
+        <p>数据库里的申请只记了“用户编号 3、商品编号 1、数量 2”。页面却要显示“普通员工买了 A4 打印纸 2 包，一共多少钱”。<span class="en">ApplyViewAssembler</span> 就是做这件事的人：按编号把姓名、商品名和金额补上，再收成一句“A4打印纸×2”。</p>
+      </div>
 
-      <article class="card" id="AuthInterceptor">
-        <p class="pkg">interceptor</p>
-        <h3>AuthInterceptor</h3>
-        <p class="job">每个业务请求的门卫。静态页面和 SpaController 的转发直接放行。</p>
-        <ul>
-          <li><code>preHandle</code>：取出 Bearer 令牌，JwtUtil 解析，再按用户编号查数据库。用户被删了就拒绝。角色不在 RequireRole 里就返回 403。</li>
-          <li><code>afterCompletion</code>：清理 UserContext。</li>
-        </ul>
-        <p class="with">配合：JwtUtil、UserMapper、RequireRole、UserContext。</p>
-      </article>
+      <h2 id="dict-common">词典：公共小工具</h2>
+      <p class="small">这些类没有业务故事，但别的类天天用它们。知道它们是“公用文具”就够了。</p>
+      <article class="card" id="PurchaseApplication"><h3>PurchaseApplication <span class="en">启动开关</span></h3><p>双击运行后端时，真正被先叫起来的就是这个类。它把整个程序打开，并告诉程序去哪里找那些 Mapper。</p></article>
+      <article class="card" id="Result"><h3>Result <span class="en">统一的回信格式</span></h3><p>后端给页面的每封回信都长一样：成功还是失败、一句话说明、真正的数据。成功时 code 是 200。没登录是 401，没有权限是 403，事情没做成是 500。这样页面不用为每个功能单独猜回信长什么样。</p></article>
+      <article class="card" id="PageResult"><h3>PageResult <span class="en">翻页用的盒子</span></h3><p>商品、申请、订单可能有很多行。这个盒子告诉页面：一共多少条、现在第几页、这一页有哪些行。没有数据时用空盒子，页面就显示“还没有订单”。</p></article>
+      <article class="card" id="BizException"><h3>BizException <span class="en">可以告诉用户的错误</span></h3><p>比如“只有被驳回的申请才能修改”。这不是程序崩溃，而是规则不允许。抛出它之后，页面上会直接看到这句话。</p></article>
+      <article class="card" id="RoleConst"><h3>RoleConst <span class="en">三种人的代号</span></h3><p>管理员 admin，审核员 audit，员工 staff。集中写在这里，避免有的地方写成“管理员”，有的地方写成 admin，对不上。</p></article>
+      <article class="card" id="StatusConst"><h3>StatusConst <span class="en">状态的标准写法</span></h3><p>申请只有三种：待审批、已通过、已驳回。订单只有四种：待采购、采购中、已到货、已完成。改状态时只允许这几个字。</p></article>
+      <article class="card" id="UserContext"><h3>UserContext <span class="en">当前是谁</span></h3><p>一次请求处理期间，把登录的人放在手里。请求结束必须丢掉，不然下一次可能误当成同一个人。</p></article>
+      <article class="card" id="RequireRole"><h3>RequireRole <span class="en">门上的牌子</span></h3><p>贴在某个功能上，写明哪些角色能进。没贴牌子的功能，只要登录了就能用，比如看商品、看公告。</p></article>
+      <article class="card" id="GlobalExceptionHandler"><h3>GlobalExceptionHandler <span class="en">错误翻译员</span></h3><p>程序里出现的错误，有的是你没填理由，有的是规则不允许，有的是真的坏了。这个类把它们都变成页面能显示的一句中文。真正的故障细节只写进日志，不甩给用户。</p></article>
 
-      <article class="card" id="JwtUtil">
-        <p class="pkg">util</p>
-        <h3>JwtUtil</h3>
-        <p class="job">签发和解析登录令牌。令牌里只放用户编号和角色，真正的权限仍以数据库里的最新角色为准。</p>
-        <ul>
-          <li><code>initSecret</code>：读取环境变量 <code>PURCHASE_JWT_SECRET</code>。演示环境没配时，本次启动临时生成一把密钥，重启后要重新登录。</li>
-          <li><code>createToken</code> / <code>parse</code>：登录成功时签发，拦截器里解析。</li>
-        </ul>
-      </article>
+      <h2 id="dict-config">词典：程序启动时做的准备</h2>
+      <article class="card" id="WebMvcConfig"><h3>WebMvcConfig</h3><p>安排保安站在哪里。除了登录，其它接口都要先经过 AuthInterceptor。开发时页面在 8081、程序在 8080，它也负责允许这种跨地址访问。</p></article>
+      <article class="card" id="AuthInterceptor"><h3>AuthInterceptor <span class="en">保安</span></h3><p>检查通行证，查出这个人现在的角色，再看门上的牌子。角色以数据库里最新的为准，不轻信通行证上旧的字。页面文件本身不用检查，不然你连登录页都打不开。</p></article>
+      <article class="card" id="JwtUtil"><h3>JwtUtil <span class="en">通行证制作处</span></h3><p>登录成功就做一张有期限的通行证。上面有用户编号。没人配置密钥时，这次启动会临时做一把锁。程序重启后，旧通行证就失效了，需要重新登录。</p></article>
+      <article class="card" id="PasswordConfig"><h3>PasswordConfig</h3><p>准备密码比对工具。数据库不保存你输入的那串原文。比对时是拿你刚输入的密码，去对那串打乱后的结果。</p></article>
+      <article class="card" id="MybatisPlusConfig"><h3>MybatisPlusConfig</h3><p>让列表真的按页取数据。没有这个配置，所谓的“第一页”可能会把整张表都取出来。</p></article>
+      <article class="card" id="DemoDataInitializer"><h3>DemoDataInitializer <span class="en">第一次开机的样例数据</span></h3><p>如果用户、商品、公告还是空的，就放进三个演示账号、几种文具和两条公告。已经有数据时不会覆盖，所以不会把别人改过的密码又变回 123456。</p></article>
+      <article class="card" id="SpaController"><h3>SpaController</h3><p>演示镜像里，网页和后端是一起启动的。你在浏览器刷新“商品”这一页时，服务器先把网页壳子交回来，再由网页自己决定显示商品。这个类就是交回那个壳子。它不处理真正的业务。</p></article>
 
-      <article class="card" id="PasswordConfig">
-        <p class="pkg">config</p>
-        <h3>PasswordConfig</h3>
-        <p class="job">只提供 BCryptPasswordEncoder。没有启用整套 Spring Security 过滤器，登录校验是自己写的。</p>
-      </article>
+      <h2 id="dict-controller">词典：所有入口</h2>
+      <p>入口类的名字都以 Controller 结尾。它们像前台：接收页面送来的内容，检查是谁，然后把活交给业务类。前台自己不算账。</p>
+      <article class="card" id="UserController"><h3>UserController <span class="en">/user</span></h3><p>登录、查看“我是谁”、管理员新增和删除用户、重置别人的密码、每个人改自己的密码。登录这一下不需要通行证，其它都要。</p></article>
+      <article class="card" id="GoodsController"><h3>GoodsController <span class="en">/goods</span></h3><p>谁都能看商品。只有管理员能新增、修改、删除。</p></article>
+      <article class="card" id="PurchaseApplyController"><h3>PurchaseApplyController <span class="en">/apply</span></h3><p>员工提交申请、驳回后重提、所有人按权限查看、审核员审批。申请人是谁，以前台认出的登录用户为准，不采用页面自己填的用户编号，防止冒充别人申请。</p></article>
+      <article class="card" id="PurchaseOrderController"><h3>PurchaseOrderController <span class="en">/order</span></h3><p>查看订单。改状态的入口只给管理员。</p></article>
+      <article class="card" id="NoticeController"><h3>NoticeController <span class="en">/notice</span></h3><p>谁都能看公告。只有管理员能发布、修改、删除。</p></article>
+      <article class="card" id="HomeController"><h3>HomeController <span class="en">/home</span></h3><p>登录后的第一屏。只回答“你现在有几件要处理的事”和“最新公告”。员工不会在这里看见别人的申请内容。</p></article>
 
-      <article class="card" id="MybatisPlusConfig">
-        <p class="pkg">config</p>
-        <h3>MybatisPlusConfig</h3>
-        <p class="job">注册分页插件。没有它时，Page 查询会把整张表查出来。H2 演示库开了 MySQL 模式，所以分页语法按 MySQL 的 LIMIT。</p>
-      </article>
+      <h2 id="dict-service">词典：真正做决定的类</h2>
+      <p>你会看到两份很像的名字，比如 UserService 和 UserServiceImpl。Service 像菜单，只写有哪些功能。Impl 是后厨，规则写在这里。第一次读，看 Impl 就够了。</p>
+      <article class="card" id="UserService"><h3>UserService</h3><p>菜单。列出登录、建用户、改资料、删除、重置密码、改自己的密码。没有具体步骤。</p></article>
+      <article class="card" id="UserServiceImpl"><h3>UserServiceImpl</h3><p>账号和密码的规则都在这里。账号不存在和密码错误，提示同一句话，避免别人试出哪些账号是真的。不能删除自己。已经写过申请或审过单的人不能删，否则旧单据会找不到人。管理员不能把自己的管理员身份取消掉。</p></article>
+      <article class="card" id="GoodsService"><h3>GoodsService</h3><p>商品功能的菜单：查询、新增、修改、删除。</p></article>
+      <article class="card" id="GoodsServiceImpl"><h3>GoodsServiceImpl</h3><p>保存商品时把单价整理成两位小数。已经被人申请过的商品不能删除，不然旧申请会变成“不知道买的是什么”。</p></article>
+      <article class="card" id="PurchaseApplyService"><h3>PurchaseApplyService</h3><p>申请功能的菜单：提交、重提、查询、看详情、审批。</p></article>
+      <article class="card" id="PurchaseOrderService"><h3>PurchaseOrderService</h3><p>订单功能的菜单：查询、改状态。没有“新建订单”，因为订单只在审批通过时出现。</p></article>
+      <article class="card" id="NoticeService"><h3>NoticeService</h3><p>公告功能的菜单。</p></article>
+      <article class="card" id="NoticeServiceImpl"><h3>NoticeServiceImpl</h3><p>发布和修改公告。修改后把发布时间改成现在，这样刚改过的公告会排到前面。首页只要最近几条。</p></article>
+      <article class="card" id="HomeService"><h3>HomeService</h3><p>工作台功能的菜单，只有一个方法：按当前这个人统计数字。</p></article>
+      <article class="card" id="HomeServiceImpl"><h3>HomeServiceImpl</h3><p>员工看自己的待审批、被驳回和订单数。审核员和管理员看全部待审批、全部订单和商品种类数。数字和对应列表是同一套算法，不会出现首页写 3 条、点进去却是 5 条。</p></article>
+      <article class="card" id="ApplyViewAssembler"><h3>ApplyViewAssembler <span class="en">把编号翻译成人话</span></h3><p>列表如果每一行都单独查一次姓名和商品，会很慢。这个类一次把一批申请的明细补齐，算出金额，并生成简短摘要。金额用的是商品现在的单价，因为明细表里没有记住下单那一刻的价格。</p></article>
 
-      <article class="card" id="DemoDataInitializer">
-        <p class="pkg">config</p>
-        <h3>DemoDataInitializer</h3>
-        <p class="job">应用启动后，如果用户、商品或公告表是空的，就写入论文里的三个账号、八种办公用品和两条公告。已经有数据时不会覆盖，所以不会把别人改过的密码重置回去。</p>
-        <p class="with">演示账号密码都是 123456，入库前会先 BCrypt 加密。</p>
-      </article>
+      <h2 id="dict-data">词典：表、交上来的表格、返回去的表格</h2>
+      <p>同一件事会有三种样子，不要吓到。实体是数据库里的一行。DTO 是页面交上来的表单，上面有“必填”之类的检查。VO 是整理好再还给页面的内容，可以多出数据库里没有的姓名和金额。</p>
 
-      <article class="card" id="GlobalExceptionHandler">
-        <p class="pkg">exception</p>
-        <h3>GlobalExceptionHandler</h3>
-        <p class="job">把三类错误收成统一 JSON。</p>
-        <ul>
-          <li>参数校验失败：返回第一条中文提示，例如“请填写申请理由”。</li>
-          <li>BizException：返回业务原因。</li>
-          <li>数据库唯一约束或外键冲突：提示可能重复或仍被引用。</li>
-          <li>其他异常：只记日志，页面对用户显示“系统繁忙”。</li>
-        </ul>
-      </article>
+      <article class="card" id="User"><h3>User <span class="en">用户表</span></h3><p>账号、打乱后的密码、姓名、角色、手机号、创建时间。密码不会跟着接口回到页面上。</p></article>
+      <article class="card" id="Goods"><h3>Goods <span class="en">商品表</span></h3><p>名称、类别、规格、单价、库存、录入时间。</p></article>
+      <article class="card" id="PurchaseApply"><h3>PurchaseApply <span class="en">申请表</span></h3><p>谁申请的、为什么申请、什么时候交的、现在是待审批还是已通过或已驳回、谁审的、审了什么意见。</p></article>
+      <article class="card" id="PurchaseApplyItem"><h3>PurchaseApplyItem <span class="en">申请明细表</span></h3><p>一张申请可以买好几种东西。每种东西一行：哪个商品、要多少。</p></article>
+      <article class="card" id="PurchaseOrder"><h3>PurchaseOrder <span class="en">订单表</span></h3><p>对应哪张申请、订单状态、什么时候生成的。一张申请最多一张订单。</p></article>
+      <article class="card" id="Notice"><h3>Notice <span class="en">公告表</span></h3><p>标题、正文、发布时间。</p></article>
 
-      <article class="card" id="SpaController">
-        <p class="pkg">controller</p>
-        <h3>SpaController</h3>
-        <p class="job">前端打包进后端之后，用户刷新 <code>/goods</code> 这类地址时，浏览器要拿到 index.html，再由 Vue Router 显示对应页面。这个类只转发页面路径，不转发 <code>/user</code>、<code>/goods/page</code> 这类接口。</p>
-      </article>
+      <article class="card" id="mappers"><h3>六个 Mapper</h3><p>UserMapper、GoodsMapper、PurchaseApplyMapper、PurchaseApplyItemMapper、PurchaseOrderMapper、NoticeMapper。一个 Mapper 对应上面一张表。它们继承现成工具，所以普通的新增、查询、修改、删除不用再写 SQL。你可以把它理解成：每张表配了一个保管员，保管员不制定规则。</p></article>
 
-      <h2>控制器</h2>
-      <p>控制器对应前端能点到的动作。写操作看 RequireRole，查询类接口多数只要登录。</p>
+      <article class="card" id="LoginDTO"><h3>LoginDTO</h3><p>登录时交上来的两格：账号、密码。不能空着。</p></article>
+      <article class="card" id="PasswordDTO"><h3>PasswordDTO</h3><p>改自己的密码：旧密码、新密码。新密码要 6 到 20 位。</p></article>
+      <article class="card" id="UserCreateDTO"><h3>UserCreateDTO</h3><p>管理员新建用户时交的表：账号、初始密码、姓名、角色、手机号。账号要用字母开头。</p></article>
+      <article class="card" id="UserUpdateDTO"><h3>UserUpdateDTO</h3><p>修改用户时不能改账号，只能改姓名、角色和手机号。账号一改，旧单据就对不上人了。</p></article>
+      <article class="card" id="GoodsSaveDTO"><h3>GoodsSaveDTO</h3><p>新增或修改商品。修改时要带上商品编号。单价和库存不能是负数。</p></article>
+      <article class="card" id="ApplySubmitDTO"><h3>ApplySubmitDTO 和 ApplyItemDTO</h3><p>提交申请时的理由，加上至少一种商品。每种商品是编号和数量。重新提交时还要带上原来的申请编号。</p></article>
+      <article class="card" id="AuditDTO"><h3>AuditDTO</h3><p>审核员交上来的结论：通过还是驳回，以及意见。驳回却不写意见，会在业务类里被拒绝。</p></article>
+      <article class="card" id="OrderStatusDTO"><h3>OrderStatusDTO</h3><p>管理员改订单时交的两格：哪张订单、改成哪个状态。</p></article>
+      <article class="card" id="NoticeSaveDTO"><h3>NoticeSaveDTO</h3><p>公告的标题和正文。修改时带上公告编号。</p></article>
 
-      <article class="card" id="UserController">
-        <p class="pkg">controller · /user</p>
-        <h3>UserController</h3>
-        <p class="job">登录、当前用户、管理员维护账号、每个人改自己的密码。</p>
-        <ul>
-          <li><code>POST /login</code>：不需要令牌。</li>
-          <li><code>GET /me</code>：刷新页面后确认自己是谁。</li>
-          <li><code>GET /page</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE /{userId}</code>、<code>PUT /reset/{userId}</code>：仅管理员。</li>
-          <li><code>PUT /password</code>：当前用户修改自己的密码。</li>
-        </ul>
-      </article>
+      <article class="card" id="LoginVO"><h3>LoginVO</h3><p>登录成功后交回页面的内容：通行证、你的编号、账号、姓名、角色、手机号。没有密码。</p></article>
+      <article class="card" id="ApplyItemVO"><h3>ApplyItemVO</h3><p>页面上的一行明细：商品名、规格、单价、数量、金额。</p></article>
+      <article class="card" id="ApplyListVO"><h3>ApplyListVO</h3><p>申请列表的一行。东西太多时不把每件都铺开，而是收成一句摘要。</p></article>
+      <article class="card" id="ApplyDetailVO"><h3>ApplyDetailVO</h3><p>点开一张申请后看到的全部内容，包括每件商品。审批和重新提交前都靠它回显。</p></article>
+      <article class="card" id="OrderVO"><h3>OrderVO</h3><p>订单列表上的一行，补上了申请人、理由、买了什么和金额。</p></article>
+      <article class="card" id="HomeSummaryVO"><h3>HomeSummaryVO</h3><p>工作台要的那几个数字，外加最新公告。</p></article>
 
-      <article class="card" id="GoodsController">
-        <p class="pkg">controller · /goods</p>
-        <h3>GoodsController</h3>
-        <p class="job">商品查询对所有登录用户开放。新增、修改、删除只允许管理员。</p>
-        <ul>
-          <li><code>GET /page</code>：可按名称、类别筛选。提交申请页会一次取较多记录。</li>
-          <li><code>POST</code>、<code>PUT</code>、<code>DELETE /{goodsId}</code>：维护商品档案。</li>
-        </ul>
-      </article>
+      <article class="card" id="PurchaseFlowTest"><h3>PurchaseFlowTest <span class="en">自动检查主流程</span></h3><p>这不是给用户点的页面。它是一段自动测验：假装员工提交、审核员驳回、员工修改后再交、审核员通过、管理员把订单改成已到货，并确认员工不能去做管理员的事。老师或你自己运行测试时，它用来证明主流程没断。</p></article>
 
-      <article class="card" id="PurchaseApplyController">
-        <p class="pkg">controller · /apply</p>
-        <h3>PurchaseApplyController</h3>
-        <p class="job">采购申请的入口。申请人编号从登录用户取，不信任前端传来的用户编号。</p>
-        <ul>
-          <li><code>POST /submit</code>：仅员工，提交新申请。</li>
-          <li><code>PUT /resubmit</code>：仅员工，修改被驳回的申请。</li>
-          <li><code>GET /page</code>、<code>GET /{applyId}</code>：查询。员工在 Service 里被限制成只能看自己的。</li>
-          <li><code>POST /audit</code>：仅审核人员。</li>
-        </ul>
-      </article>
+      <h2 id="frontend">页面文件，用生活语言再说一次</h2>
+      <article class="card"><h3>main.js 和 App.vue</h3><p>把网页程序启动起来，并装上现成的按钮、表格样式。App 本身几乎是空的，只是一个用来切换页面的框。</p></article>
+      <article class="card"><h3>router/index.js</h3><p>网址和页面的对照表。没登录就只能停在登录页。员工如果手动输入管理员的网址，会被送回工作台。</p></article>
+      <article class="card"><h3>utils/request.js 和 api/index.js</h3><p>request 是所有请求的公用邮差，负责贴通行证、弹出失败原因。api 把每个地址包成一个好记的函数，页面就不用反复写那串地址。</p></article>
+      <article class="card"><h3>Layout.vue</h3><p>登录之后左边的菜单。三种人看见的菜单不一样。</p></article>
+      <article class="card"><h3>Home.vue</h3><p>工作台。告诉你下一步该干什么，并列出公告。</p></article>
+      <article class="card"><h3>GoodsList.vue</h3><p>商品表格。管理员多出新增、修改、删除。</p></article>
+      <article class="card"><h3>ApplySubmit.vue</h3><p>员工选东西、写理由、提交。</p></article>
+      <article class="card"><h3>ApplyTable.vue</h3><p>一张表三处用：我的申请、待我审批、全部申请。审批按钮和“重新提交”也在这里。</p></article>
+      <article class="card"><h3>OrderList.vue</h3><p>订单表。只有管理员看得到“更新状态”。</p></article>
+      <article class="card"><h3>UserList.vue</h3><p>管理员管理人员。</p></article>
+      <article class="card"><h3>NoticeList.vue</h3><p>公告。管理员在上面写，所有人在下面看。</p></article>
+      <article class="card"><h3>Password.vue</h3><p>改自己的密码。改完会退出，让你用新密码再登录一次。</p></article>
+      <article class="card"><h3>Stamp.vue 和 dict.js</h3><p>把“待审批”“已通过”“已驳回”显示成一枚小章。字本身就能读，颜色只是帮忙区分。</p></article>
 
-      <article class="card" id="PurchaseOrderController">
-        <p class="pkg">controller · /order</p>
-        <h3>PurchaseOrderController</h3>
-        <p class="job">订单查询对登录用户开放，但员工只能看到自己的。改状态只允许管理员。</p>
-        <ul>
-          <li><code>GET /page</code>：可按状态和关键字筛选。</li>
-          <li><code>PUT /status</code>：更新履约状态。</li>
-        </ul>
-      </article>
-
-      <article class="card" id="NoticeController">
-        <p class="pkg">controller · /notice</p>
-        <h3>NoticeController</h3>
-        <p class="job">公告所有登录用户都能看。发布、修改、删除只允许管理员。</p>
-        <ul>
-          <li><code>GET /page</code>、<code>GET /latest</code>：列表和首页最近几条。</li>
-          <li><code>POST</code>、<code>PUT</code>、<code>DELETE /{noticeId}</code>：维护公告。</li>
-        </ul>
-      </article>
-
-      <article class="card" id="HomeController">
-        <p class="pkg">controller · /home</p>
-        <h3>HomeController</h3>
-        <p class="job">工作台只提供一个接口 <code>GET /summary</code>。返回当前角色真正用得上的数量和最新公告，不返回别人的申请明细。</p>
-      </article>
-
-      <h2>业务实现</h2>
-      <p>接口 UserService、GoodsService、PurchaseApplyService、PurchaseOrderService、NoticeService、HomeService 只声明方法。真正的规则在下面这些实现类里。读业务时看 Impl，不用在接口和实现之间来回跳。</p>
-
-      <article class="card" id="UserServiceImpl">
-        <p class="pkg">service.impl</p>
-        <h3>UserServiceImpl</h3>
-        <p class="job">账号、密码和角色。密码只存 BCrypt 密文。</p>
-        <ul>
-          <li><code>login</code>：账号不存在和密码错误使用同一句提示，避免告诉别人账号是否存在。</li>
-          <li><code>createUser</code>：检查角色和账号重复。</li>
-          <li><code>updateUser</code>：不能取消自己的管理员身份，否则系统会没有管理员。</li>
-          <li><code>deleteUser</code>：不能删除自己；已有申请或审批记录的用户不能删。</li>
-          <li><code>resetPassword</code>：重置为 123456。</li>
-          <li><code>changePassword</code>：必须先对上原密码，且新密码不能和原密码相同。</li>
-        </ul>
-      </article>
-
-      <article class="card" id="GoodsServiceImpl">
-        <p class="pkg">service.impl</p>
-        <h3>GoodsServiceImpl</h3>
-        <p class="job">办公用品档案。单价保留两位小数。已被申请引用的商品不能删除，否则历史明细会失去名称。库存只在这里由管理员修改，审批通过不会扣减。</p>
-      </article>
-
-      <article class="card" id="PurchaseApplyServiceImpl">
-        <p class="pkg">service.impl</p>
-        <h3>PurchaseApplyServiceImpl</h3>
-        <p class="job">本系统最重要的类。提交、重提、查询和审批都在这里。</p>
-        <ul>
-          <li><code>submit</code>：校验商品存在、同一申请不能重复选择同一商品，然后保存主表和明细，状态为待审批。</li>
-          <li><code>resubmit</code>：必须是申请人本人，且当前状态是已驳回。重提后清空上次审批人、意见和时间，换掉明细。</li>
-          <li><code>pageApplies</code> / <code>detail</code>：员工只能看自己的申请。</li>
-          <li><code>audit</code>：只处理待审批单据。驳回必须有意见。通过时如果还没有订单，就插入状态为待采购的订单。两步在同一个事务里，失败会一起回滚。</li>
-        </ul>
-      </article>
-
-      <article class="card" id="PurchaseOrderServiceImpl">
-        <p class="pkg">service.impl</p>
-        <h3>PurchaseOrderServiceImpl</h3>
-        <p class="job">订单不是人手新建的，只在审批通过时生成。这个类负责查询和改状态。</p>
-        <ul>
-          <li><code>pageOrders</code>：员工先找出自己的申请编号，再查这些申请对应的订单。管理员和审核人员看全部。</li>
-          <li><code>updateStatus</code>：只接受 StatusConst 里的四种状态。</li>
-        </ul>
-      </article>
-
-      <article class="card" id="NoticeServiceImpl">
-        <p class="pkg">service.impl</p>
-        <h3>NoticeServiceImpl</h3>
-        <p class="job">公告的增删改查。修改公告时会把发布时间更新成现在，让改过的公告回到列表前面。<code>latest</code> 给工作台用，最多 20 条。</p>
-      </article>
-
-      <article class="card" id="HomeServiceImpl">
-        <p class="pkg">service.impl</p>
-        <h3>HomeServiceImpl</h3>
-        <p class="job">按角色统计工作台数字。员工看到自己的待审批、已驳回和订单数。审核人员和管理员看到全库待审批数、订单数和商品数。统计口径和对应列表一致。</p>
-      </article>
-
-      <article class="card" id="ApplyViewAssembler">
-        <p class="pkg">service.support</p>
-        <h3>ApplyViewAssembler</h3>
-        <p class="job">列表如果逐条查商品和用户，会很慢。这个类按一批申请编号取出明细，补上商品名、规格和金额，并生成“签字笔×2、打印纸×1”这样的摘要。</p>
-        <p class="with">明细表没有保存下单时的单价，所以金额按商品当前单价计算。商品已删除时，名称显示“商品已删除”，金额按 0。</p>
-      </article>
-
-      <h2 id="entities">实体类</h2>
-      <p>实体类和数据库表一一对应，字段用下划线转驼峰。它们不写业务规则。</p>
-      <article class="card" id="User">
-        <p class="pkg">entity · 表 user</p>
-        <h3>User</h3>
-        <p class="job">登录账号、加密密码、姓名、角色、手机号、创建时间。表名加了反引号，避免 H2 把 user 当成关键字。密码字段有 <code>@JsonIgnore</code>，接口不会把密文返回给前端。</p>
-      </article>
-      <article class="card" id="Goods">
-        <p class="pkg">entity · 表 goods</p>
-        <h3>Goods</h3>
-        <p class="job">商品名称、类别、规格、单价、库存、录入时间。</p>
-      </article>
-      <article class="card" id="PurchaseApply">
-        <p class="pkg">entity · 表 purchase_apply</p>
-        <h3>PurchaseApply</h3>
-        <p class="job">一张采购申请：谁申请的、理由、提交时间、审批状态、谁审的、审批意见和审批时间。</p>
-      </article>
-      <article class="card" id="PurchaseApplyItem">
-        <p class="pkg">entity · 表 purchase_apply_item</p>
-        <h3>PurchaseApplyItem</h3>
-        <p class="job">申请明细。一张申请可以有多行，每行是一个商品和采购数量。</p>
-      </article>
-      <article class="card" id="PurchaseOrder">
-        <p class="pkg">entity · 表 purchase_order</p>
-        <h3>PurchaseOrder</h3>
-        <p class="job">由申请生成的订单。一张申请最多一张订单，所以 apply_id 有唯一约束。</p>
-      </article>
-      <article class="card" id="Notice">
-        <p class="pkg">entity · 表 notice</p>
-        <h3>Notice</h3>
-        <p class="job">公告标题、正文和发布时间。</p>
-      </article>
-
-      <h2 id="mappers">Mapper</h2>
-      <article class="card" id="mappers-list">
-        <p class="pkg">mapper</p>
-        <h3>六张表各有一个 Mapper</h3>
-        <p class="job">UserMapper、GoodsMapper、PurchaseApplyMapper、PurchaseApplyItemMapper、PurchaseOrderMapper、NoticeMapper 都继承 MyBatis-Plus 的 BaseMapper。因此新增、按主键查询、按条件更新、删除和分页都不需要 XML。</p>
-        <p class="with">GoodsMapper 上的注释写明了这一点，对应论文里的 Mapper 示例。复杂组装不写 SQL，交给 ApplyViewAssembler 在 Java 里完成。</p>
-      </article>
-
-      <h2 id="dtos">DTO</h2>
-      <p>DTO 是请求体。字段上的注解负责第一层校验，Service 里还有业务校验。</p>
-      <article class="card"><h3>LoginDTO</h3><p class="job">登录只收账号和密码。</p></article>
-      <article class="card"><h3>PasswordDTO</h3><p class="job">修改自己的密码：原密码、新密码。新密码 6 到 20 位。</p></article>
-      <article class="card"><h3>UserCreateDTO</h3><p class="job">管理员新增用户。账号以字母开头，只能含字母、数字和下划线。同时指定初始密码、姓名、角色和可选手机号。</p></article>
-      <article class="card"><h3>UserUpdateDTO</h3><p class="job">修改姓名、角色和手机号。账号创建后不能改，避免历史单据对不上人。</p></article>
-      <article class="card"><h3>GoodsSaveDTO</h3><p class="job">新增或修改商品。修改时必须带 goodsId。单价不能为负，库存不能为负。</p></article>
-      <article class="card"><h3>ApplySubmitDTO、ApplyItemDTO</h3><p class="job">提交和重新提交共用。理由必填，至少一种商品。重新提交时多带 applyId。每行明细是商品编号和数量，数量至少为 1。</p></article>
-      <article class="card"><h3>AuditDTO</h3><p class="job">审批结论只能在 Service 里接受“已通过”或“已驳回”。驳回意见在 Service 里强制要求，不放在注解里，因为通过时可以不填。</p></article>
-      <article class="card"><h3>OrderStatusDTO</h3><p class="job">管理员更新订单时提交订单编号和目标状态。</p></article>
-      <article class="card"><h3>NoticeSaveDTO</h3><p class="job">公告标题和正文。修改时带 noticeId。</p></article>
-
-      <h2 id="vos">VO</h2>
-      <p>VO 是返回给页面的对象，可以拼上表里没有的姓名和金额。</p>
-      <article class="card"><h3>LoginVO</h3><p class="job">登录成功后的令牌、用户编号、账号、姓名、角色、手机号。没有密码。</p></article>
-      <article class="card"><h3>ApplyItemVO</h3><p class="job">一条明细的商品名、规格、单价、数量和金额。</p></article>
-      <article class="card"><h3>ApplyListVO</h3><p class="job">申请列表的一行。明细被收成 goodsSummary，避免表格太宽。</p></article>
-      <article class="card"><h3>ApplyDetailVO</h3><p class="job">申请详情，给查看、审批和重新提交前回显。包含全部明细。</p></article>
-      <article class="card"><h3>OrderVO</h3><p class="job">订单加上申请人、申请理由、明细摘要和金额。</p></article>
-      <article class="card"><h3>HomeSummaryVO</h3><p class="job">工作台需要的姓名、角色、各类数量和最新公告列表。</p></article>
-
-      <article class="card" id="PurchaseFlowTest">
-        <p class="pkg">test</p>
-        <h3>PurchaseFlowTest</h3>
-        <p class="job">用 H2 把主流程跑一遍，不依赖本机 MySQL。它检查演示密码密文是否对应 123456，然后走：员工提交、审核驳回、员工重提、审核通过并生成订单、管理员把订单改为已到货。中途还确认员工不能新增商品，也不能改订单状态。</p>
-      </article>
-
-      <h2 id="frontend">前端文件</h2>
-      <p>前端不是 Java 类，但答辩时经常被问到页面和接口怎么对上。开发时页面在 8081，请求以 <code>/api</code> 开头，由 Vite 去掉前缀后转发到 8080。演示镜像里没有单独的前端服务，页面已经被打进后端。</p>
-      <article class="card"><h3>main.js、App.vue</h3><p class="job">挂载 Vue，并安装 Element-UI 的中文语言包。App 只放一个路由出口。</p></article>
-      <article class="card"><h3>router/index.js</h3><p class="job">定义每个页面的地址和允许的角色。没登录去登录页，角色不对回工作台。</p></article>
-      <article class="card"><h3>utils/request.js</h3><p class="job">Axios 实例。自动带令牌；code 不是 200 时弹出 msg；401 时清除本地登录状态并回到登录页。</p></article>
-      <article class="card"><h3>api/index.js</h3><p class="job">把每个后端接口包成一个函数，页面不直接写 URL。</p></article>
-      <article class="card"><h3>utils/dict.js、components/Stamp.vue</h3><p class="job">角色中文名，以及用印章样式显示待审批、已通过、已驳回和订单状态。颜色只是辅助，文字仍然可读。</p></article>
-      <article class="card"><h3>layout/Layout.vue</h3><p class="job">登录后的外壳。按 admin、audit、staff 显示不同菜单，并提供退出。</p></article>
-      <article class="card"><h3>views/Login.vue</h3><p class="job">登录表单。成功后把令牌和用户信息放进 localStorage。</p></article>
-      <article class="card"><h3>views/Home.vue</h3><p class="job">工作台。调用 <code>/home/summary</code>，按角色显示该处理的数量和公告。</p></article>
-      <article class="card"><h3>views/goods/GoodsList.vue</h3><p class="job">商品台账。管理员看到新增、修改、删除，其他角色只读。</p></article>
-      <article class="card"><h3>views/apply/ApplySubmit.vue</h3><p class="job">员工选品。数量为 0 的行不会提交。</p></article>
-      <article class="card"><h3>views/apply/ApplyTable.vue</h3><p class="job">三处复用：我的申请、待我审批、全部申请记录。审批和重新提交都在这个组件里完成。</p></article>
-      <article class="card"><h3>views/order/OrderList.vue</h3><p class="job">订单列表。只有管理员能打开“更新状态”。</p></article>
-      <article class="card"><h3>views/user/UserList.vue</h3><p class="job">管理员维护用户、重置密码和删除用户。</p></article>
-      <article class="card"><h3>views/notice/NoticeList.vue</h3><p class="job">公告栏。管理员在上方编写，所有人在下方阅读。</p></article>
-      <article class="card"><h3>views/profile/Password.vue</h3><p class="job">修改当前账号密码。成功后清除登录状态，要求重新登录。</p></article>
-
-      <h2>配置文件</h2>
-      <article class="card">
-        <h3>application.yml 和 application-h2.yml</h3>
-        <p class="job">默认配置指向 MySQL，密码来自环境变量 <code>DB_PASSWORD</code>，不写死在仓库里。演示镜像设置 <code>SPRING_PROFILES_ACTIVE=h2</code> 后，改用内存数据库，并执行 <code>db/schema-h2.sql</code> 建表。H2 的表结构跟论文里的六张表一致，只是去掉了 MySQL 专有的引擎和注释语法。</p>
-      </article>
+      <h2>你现在可以怎么读代码</h2>
+      <div class="card">
+        <p>第一次只打开这 4 个文件，顺着小王的故事看：</p>
+        <p>1. <code>Login.vue</code>，看页面把什么送出去。<br>2. <code>UserController.java</code>，看前台把活交给谁。<br>3. <code>PurchaseApplyServiceImpl.java</code>，看申请如何变成“待审批”，通过后又如何生出订单。<br>4. <code>AuthInterceptor.java</code>，看没有登录的人为什么进不去。</p>
+        <p>看懂这一圈之后，其它类都是同一套办法：页面收集内容，Controller 接待，ServiceImpl 做决定，Mapper 去表里读写。</p>
+      </div>
     </main>
   </div>
   <script>
-    /** 按类名、包名和说明过滤左侧目录和正文卡片。 */
     var input = document.getElementById('q')
     input.addEventListener('input', function () {
       var text = input.value.trim().toLowerCase()
-      document.querySelectorAll('main .card, main article').forEach(function (node) {
-        var show = !text || node.textContent.toLowerCase().indexOf(text) !== -1
-        node.style.display = show ? '' : 'none'
+      document.querySelectorAll('main .card, main .step').forEach(function (node) {
+        node.style.display = !text || node.textContent.toLowerCase().indexOf(text) !== -1 ? '' : 'none'
       })
     })
   </script>
