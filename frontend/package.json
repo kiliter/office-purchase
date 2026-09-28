@@ -1,0 +1,20 @@
+{
+  "name": "office-purchase-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "serve": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "axios": "1.7.9",
+    "element-ui": "2.15.14",
+    "vue": "2.7.16",
+    "vue-router": "3.6.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue2": "2.3.3",
+    "vite": "5.4.11"
+  }
+}

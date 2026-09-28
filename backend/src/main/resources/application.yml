@@ -1,0 +1,26 @@
+# 数据库连接与论文第五章配置保持一致：库名 purchase_db，端口 8080
+server:
+  port: 8080
+
+spring:
+  application:
+    name: office-purchase
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/purchase_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+purchase:
+  jwt-secret: ${PURCHASE_JWT_SECRET:}
+  jwt-expire-hours: 12

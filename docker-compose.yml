@@ -1,0 +1,18 @@
+# 按论文启动 MySQL 8.0。首次启动会执行 sql/purchase_db.sql。
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: office-purchase-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: purchase_db
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:
+      - office-purchase-mysql:/var/lib/mysql
+      - ./sql/purchase_db.sql:/docker-entrypoint-initdb.d/01-purchase.sql:ro
+
+volumes:
+  office-purchase-mysql:
