@@ -93,6 +93,22 @@ button, input, textarea { font-family: inherit; }
   border-left-color: var(--manila);
 }
 
+/* 侧栏里的说明书按钮要和菜单项同一套字号、对齐方式。 */
+button.drawer {
+  width: 100%;
+  border: 0;
+  border-left: 3px solid transparent;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.drawer:hover,
+button.drawer:focus-visible {
+  background: var(--drawer);
+}
+
 .main { min-width: 0; }
 
 .top {

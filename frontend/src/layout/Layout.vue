@@ -10,6 +10,8 @@
         <router-link v-for="item in menus" :key="item.path" :to="item.path" class="drawer">
           {{ item.title }}
         </router-link>
+        <!-- 说明书是独立页面，不进入业务路由，所以放在修改密码下面单独打开。 -->
+        <button type="button" class="drawer" @click="openGuide">软件说明书</button>
       </nav>
     </aside>
     <section class="main">
@@ -86,6 +88,10 @@ export default {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       this.$router.push('/login')
+    },
+    /** 在新标签页打开代码说明书，避免盖住当前办理中的页面。 */
+    openGuide() {
+      window.open('/guide.html', '_blank', 'noopener')
     }
   }
 }
