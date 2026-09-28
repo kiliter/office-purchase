@@ -50,6 +50,21 @@ class PurchaseFlowTest {
     }
 
     /**
+     * 演示页面会请求 /api/user/login。没有 Vite 代理时，这个前缀也必须能登录。
+     */
+    @Test
+    void loginWithApiPrefix() throws Exception {
+        JsonNode root = json(postJson("/api/user/login",
+                "{\"username\":\"admin\",\"password\":\"123456\"}", null));
+        assertEquals(200, root.get("code").asInt(), root.toString());
+        assertEquals("admin", root.get("data").get("username").asText());
+
+        JsonNode me = json(getJson("/api/user/me", root.get("data").get("token").asText()));
+        assertEquals(200, me.get("code").asInt(), me.toString());
+        assertEquals("admin", me.get("data").get("username").asText());
+    }
+
+    /**
      * 员工提交申请，审核驳回后重提，再次通过生成订单，管理员更新到货状态。
      */
     @Test
