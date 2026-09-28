@@ -279,3 +279,5 @@ button, input, textarea { font-family: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .stamp { transform: none; }
 }
+
+.demo-accounts a { color: var(--pencil); }

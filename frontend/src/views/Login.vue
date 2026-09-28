@@ -28,7 +28,8 @@
         </div>
         <p class="demo-accounts">
           演示账号密码都是 123456。<br />
-          管理员 admin，审核人员 audit01，员工 staff01。
+          管理员 admin，审核人员 audit01，员工 staff01。<br />
+          <a href="/guide.html">打开代码说明书</a>
         </p>
       </div>
     </section>

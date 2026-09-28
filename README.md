@@ -1,83 +1,86 @@
 # 线上办公用品采购管理系统
 
-按论文《基于 SpringBoot 的线上办公用品采购管理系统设计与实现》落地的可运行项目。后端包名 `com.office.purchase`，前端为 Vue2 + Element-UI。
+论文《基于 SpringBoot 的线上办公用品采购管理系统设计与实现》的可运行代码。演示环境只使用内置 H2 数据库，不需要安装或启动 MySQL。
 
-## 方案
+## 部署演示环境
 
-系统采用 B/S 架构，分成表现层、业务层和数据访问层。
+镜像里已经包含前端页面和演示数据。拉取后直接运行：
 
-- 表现层：Vue2 + Element-UI，开发端口 8081，通过 `/api` 代理访问后端。
-- 业务层：Spring Boot 2.7.12，按角色拦截接口。
-- 数据访问层：MyBatis-Plus 3.5.3.1。
-- 数据库：MySQL 8.0，库名 `purchase_db`。本机没有 MySQL 时可用 H2 内存库演示，业务规则相同。
+```bash
+docker pull ghcr.io/kiliter/office-purchase:latest
+docker run --rm -p 8080:8080 ghcr.io/kiliter/office-purchase:latest
+```
 
-角色与论文一致：
+浏览器打开 http://127.0.0.1:8080 。
 
-| 角色 | 账号 | 能做的事 |
+演示账号的密码都是 `123456`：
+
+| 角色 | 账号 | 用来看什么 |
 | --- | --- | --- |
-| 管理员 admin | admin / 123456 | 用户、商品、公告、全部申请、全部订单，并更新订单状态 |
-| 审核人员 audit | audit01 / 123456 | 审批申请，查看全部申请和订单，浏览商品与公告 |
-| 普通员工 staff | staff01 / 123456 | 浏览商品、提交申请、查看自己的申请和订单 |
+| 管理员 | admin | 用户、商品、公告、全部申请和订单 |
+| 审核人员 | audit01 | 审批申请，通过后自动生成订单 |
+| 普通员工 | staff01 | 提交申请，查看自己的申请和订单 |
 
-主流程：员工选品并填写理由，申请状态为“待审批”。审核驳回时必须填写意见，员工修改后重新提交。审核通过后，同一事务生成状态为“待采购”的订单。管理员可将订单改为“采购中 / 已到货 / 已完成”。
+代码说明书给读源码的同学：系统跑起来后打开 http://127.0.0.1:8080/guide.html ，也可以直接打开仓库里的 `frontend/public/guide.html`。
 
-按论文“系统不足”一节，审批通过**不会自动扣减库存**。库存由管理员在商品管理里维护。密码使用 BCrypt 保存，不存明文。未登录不能访问业务接口，角色不匹配返回“没有权限执行此操作”。
+演示数据在内存里。容器停止或删除后，新增的申请和订单会消失，下次启动恢复成初始演示数据。这是演示环境的预期行为，不是故障。
 
-## 目录
+审批通过不会自动扣库存，库存由管理员在商品管理里修改。这一点和论文里“系统不足”的说明一致。
 
-- `backend`：Spring Boot 后端
-- `frontend`：Vue2 前端
-- `sql/purchase_db.sql`：论文附录用的 MySQL 建库脚本，含演示数据
-- `docker-compose.yml`：本地 MySQL 8.0
-- `scripts`：启动脚本
+### 没有现成镜像时，自己构建
 
-## 启动
+在项目根目录执行：
 
-本机默认 JDK 21 不能用来跑 Spring Boot 2.7。脚本会优先选择 JDK 17，其次 JDK 8。
+```bash
+docker build -t office-purchase:demo .
+docker run --rm -p 8080:8080 office-purchase:demo
+```
 
-### 方式一：没有 MySQL，先看效果
+构建过程会先编译 Vue 页面，再打成 Spring Boot 包，最后用只含 Java 17 运行环境的镜像启动。启动参数固定为 H2，不会去连 MySQL。
+
+### GitHub Actions 如何发镜像
+
+工作流文件是 `.github/workflows/docker-image.yml`。推送到 `main` 分支，或在 GitHub 的 Actions 页面手动运行“发布 H2 演示镜像”，都会构建镜像并推到 GitHub Container Registry。
+
+发布后的地址：
+
+- `ghcr.io/kiliter/office-purchase:latest`
+- `ghcr.io/kiliter/office-purchase:sha-<提交号>`
+
+仓库是公开的。如果 `docker pull` 提示未授权，打开包设置页把可见性改成 Public：https://github.com/users/kiliter/packages/container/package/office-purchase
+
+`docker-compose.yml` 只给本地 MySQL 开发用。演示部署不要执行它。
+
+## 本地开发
+
+本机默认 JDK 21 不能运行 Spring Boot 2.7。`scripts/start-backend.sh` 会优先选择 JDK 17。
+
+只看效果，仍然不用 MySQL：
 
 ```bash
 ./scripts/start-backend.sh h2
 ./scripts/start-frontend.sh
 ```
 
-浏览器打开 http://127.0.0.1:8081 。H2 数据在内存中，重启后端后恢复成初始演示数据。
+前端开发地址是 http://127.0.0.1:8081 ，接口代理到 8080。
 
-数据库密码和登录令牌密钥不写进仓库。使用 MySQL 前先在项目根目录准备环境变量，`.env.example` 里是空模板：
+要用论文里的 MySQL，先自己准备数据库密码，再启动：
 
 ```bash
 export DB_USERNAME=root
 export DB_PASSWORD=你的本地数据库密码
 export MYSQL_ROOT_PASSWORD=你的本地数据库密码
-export PURCHASE_JWT_SECRET=一段足够长的随机字符串
-```
-
-未设置 `PURCHASE_JWT_SECRET` 时，后端会临时生成密钥，重启后需要重新登录。
-
-### 方式二：按论文使用 MySQL
-
-```bash
 docker compose up -d
 ./scripts/start-backend.sh
 ./scripts/start-frontend.sh
 ```
 
-`docker compose` 首次启动会执行 `sql/purchase_db.sql`。如果本机已有 MySQL，请自行导入该脚本，并让 `DB_USERNAME`、`DB_PASSWORD` 与数据库账号一致。
+建库脚本是 `sql/purchase_db.sql`。未设置 `PURCHASE_JWT_SECRET` 时，后端会临时生成登录密钥，重启后需要重新登录。
 
-后端单独打包：
-
-```bash
-cd frontend && npm install && npm run build
-cd ../backend && mvn -DskipTests package
-```
-
-构建后的页面会进入后端 `static` 目录，之后只启动后端，用 http://127.0.0.1:8080 访问。
-
-## 测试
+后端测试：
 
 ```bash
 cd backend && mvn test
 ```
 
-`PurchaseFlowTest` 使用 H2，覆盖登录、员工越权、提交、驳回、重提、通过生成订单、更新订单状态。
+`PurchaseFlowTest` 使用 H2，覆盖提交、驳回、重提、生成订单和权限隔离。
